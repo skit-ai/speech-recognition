@@ -7,7 +7,7 @@ Performs asynchronous speech recognition
 ### Request Body
 The request body contains data with the following structure:
 
-```json
+```js
 {
   "config": {
     object (RecognitionConfig)

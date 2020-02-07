@@ -43,4 +43,4 @@ We recommend that you call this service using Vernacular provided client librari
 |--|--|
 |[Recognize](docs/rpc_reference/Recognize.md) | Performs synchronous speech recognition: receive results after all audio has been sent and processed.|
 |[LongRunningRecognize](docs/rpc_reference/LongRunningRecognize.md) | Performs asynchronous speech recognition: receive results via the longrunning.Operations interface.|
-|[StreamingRecognize](docs/rpc_reference/StreamingRecognize.md)	|Performs bidirectional streaming speech recognition: receive results while sending audio.|
+|[StreamingRecognize](docs/rpc_reference/StreamingRecognize.md)	|Performs streaming speech recognition: receive results while sending audio. Supports both unidirectional and bidirectional streaming.|

@@ -52,7 +52,7 @@ For best results, the audio source should be captured and transmitted using a lo
 ## SpeechContext
 Provides **hints** to the speech recognizer to favor specific words and phrases in the results.
 
-```json
+```js
 {
   "phrases": [
     string
@@ -68,7 +68,7 @@ Provides **hints** to the speech recognizer to favor specific words and phrases 
 ## SpeakerDiarizationConfig
 Config to enable speaker diarization.
 
-```json
+```js
 {
   "enableSpeakerDiarization": boolean,
   "minSpeakerCount": integer,

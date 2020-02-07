@@ -7,7 +7,7 @@ Performs a synchronous speech recognition i.e receive results after all audio ha
 ### Request Body
 The request body contains data with the following structure:
 
-```json
+```js
 {
   "config": {
     object (RecognitionConfig)
@@ -28,7 +28,7 @@ If successful, the response body contains data with the following structure:
 
 The only message returned to the client by the recognize method. It contains the result as zero or more sequential [SpeechRecognitionResult](../types/SpeechRecognitionResult.md) messages.
 
-```json
+```js
 {
   "results": [
     {

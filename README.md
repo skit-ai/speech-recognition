@@ -22,12 +22,14 @@ To get access to our APIs reach out to us at hello@vernacular.ai
 - Transcribing long audios [more than 1 min]
 - Transcribing audio from streaming input
 
-**ServiceHost:** https://asr.vernacular.ai
-
 We recommend that you call this service using Vernacular provided client libraries. If your application needs to call this service using your own libraries, you should use the HTTP Endpoints.
+
+**Supported SDKs**: [Python](python/README.md), [Go](go/README.md)
 
 
 ## REST Reference
+
+**ServiceHost:** https://asr.vernacular.ai
 
 | Name | Description |
 |--|--|
@@ -40,5 +42,5 @@ We recommend that you call this service using Vernacular provided client librari
 | Methods | Description |
 |--|--|
 |[Recognize](docs/rpc_reference/Recognize.md) | Performs synchronous speech recognition: receive results after all audio has been sent and processed.|
-|[LongRunningRecognize](docs/rpc_reference/LongRunningRecognize.md) | Performs asynchronous speech recognition: receive results via the google.longrunning.Operations interface.|
+|[LongRunningRecognize](docs/rpc_reference/LongRunningRecognize.md) | Performs asynchronous speech recognition: receive results via the longrunning.Operations interface.|
 |[StreamingRecognize](docs/rpc_reference/StreamingRecognize.md)	|Performs bidirectional streaming speech recognition: receive results while sending audio.|

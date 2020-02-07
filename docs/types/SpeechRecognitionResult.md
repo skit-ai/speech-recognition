@@ -36,7 +36,7 @@ Alternative hypotheses (a.k.a. n-best list).
 |--|--|
 |transcript | string <br> Transcript text representing the words that the user spoke.|
 |confidence	| number <br> The confidence estimate between 0.0 and 1.0. A higher number indicates an estimated greater likelihood that the recognized words are correct. This field is set only for the top alternative of a non-streaming result or, of a streaming result where isFinal=true. This field is not guaranteed to be accurate and users should not rely on it to be always provided. The default of 0.0 is a sentinel value indicating confidence was not set.|
-|words[] | object (WordInfo)<br> A list of word-specific information for each recognized word. Note: When enableSpeakerDiarization is true, you will see all the words from the beginning of the audio.|
+|words[] | object ([WordInfo](#wordinfo))<br> A list of word-specific information for each recognized word. Note: When enableSpeakerDiarization is true, you will see all the words from the beginning of the audio.|
 
 # WordInfo
 Word-specific information for recognized words.

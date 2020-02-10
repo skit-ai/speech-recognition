@@ -2,7 +2,13 @@
 Performs a synchronous speech recognition i.e receive results after all audio has been sent and processed.
 
 ### Request Method
-`POST https://asr.vernacular.ai/v1/speech:recognize`
+`POST https://asr.vernacular.ai/v2/speech:recognize`
+
+### Request Headers
+```
+X-ACCESS-TOKEN: some-access-token
+content-type: application/json
+```
 
 ### Request Body
 The request body contains data with the following structure:

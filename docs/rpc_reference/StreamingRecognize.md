@@ -12,6 +12,7 @@ Union field streaming_request. The streaming request, which is either a streamin
 
 |Fields||
 |--|--|
+|accessToken| string <br> Required. Access token provided by Vernacular.ai for authentication of request|
 |streaming_config | [StreamingRecognitionConfig](#streamingrecognitionconfig) <br> Provides information to the recognizer that specifies how to process the request. The first StreamingRecognizeRequest message must contain a streaming_config message.|
 |audio_content | bytes <br> The audio data to be recognized. Sequential chunks of audio data are sent in sequential StreamingRecognizeRequest messages. The first StreamingRecognizeRequest message must not contain audio_content data and all subsequent StreamingRecognizeRequest messages must contain audio_content data. The audio bytes must be encoded as specified in [RecognitionConfig](../types/RecognitionConfig.md). Note: as with all bytes fields, proto buffers use a pure binary representation (not base64).|
 

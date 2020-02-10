@@ -4,6 +4,12 @@ Performs asynchronous speech recognition
 ### Request Method
 `POST https://asr.vernacular.ai/v1/speech:longrunningrecognize`
 
+### Request Headers
+```
+X-ACCESS-TOKEN: some-access-token
+content-type: application/json
+```
+
 ### Request Body
 The request body contains data with the following structure:
 

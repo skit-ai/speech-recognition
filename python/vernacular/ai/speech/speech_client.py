@@ -8,7 +8,7 @@ class SpeechClient(object):
     Class that implements Vernacular.ai ASR API
     """
 
-    STTP_GRPC_HOST = "speechapis.vernacular.ai"
+    STTP_GRPC_HOST = "speechapis.vernacular.ai:80"
     AUTHORIZATION = "authorization"
 
     def __init__(self, access_token):

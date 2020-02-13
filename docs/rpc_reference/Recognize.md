@@ -9,7 +9,6 @@ The top-level message sent by the client for the Recognize method.
 
 |Fields|Description|
 |--|--|
-|accessToken| string <br> Required. Access token provided by Vernacular.ai for authentication of request|
 |config	| [RecognitionConfig](../types/RecognitionConfig.md) <br> Required. Provides information to the recognizer that specifies how to process the request.|
 |audio	| [RecognitionAudio](../types/ReocgnitionAudio.md) <br> Required. The audio data to be recognized.|
 

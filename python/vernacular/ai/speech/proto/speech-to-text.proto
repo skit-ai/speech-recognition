@@ -23,8 +23,6 @@ message RecognizeRequest {
   // Required. The audio data to be recognized.
   RecognitionAudio audio = 2;
 
-  // Required. Token for authentication
-  string access_token = 3;
   string segment = 16;
 }
 

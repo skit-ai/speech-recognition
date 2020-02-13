@@ -8,15 +8,17 @@ class SpeechClient(object):
     Class that implements Vernacular.ai ASR API
     """
 
-    # STTP_GRPC_HOST = "speechapis.vernacular.ai"
-    STTP_GRPC_HOST = "localhost:5021"
+    STTP_GRPC_HOST = "speechapis.vernacular.ai"
+    AUTHORIZATION = "authorization"
 
     def __init__(self, access_token):
         """Constructor.
         Args:
             access_token: The authorization token to send with the requests.
         """
+        self.access_token = f"bearer {access_token}"
         self.channel = grpc.insecure_channel(self.STTP_GRPC_HOST)
+
         self.client = sppt_grpc_pb.SpeechToTextStub(self.channel)
     
     def recognize(self, config, audio, timeout=None):
@@ -45,9 +47,6 @@ class SpeechClient(object):
             audio (Union[dict, ~vernacular.ai.speech.types.RecognitionAudio]): Required. The audio data to be recognized.
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~vernacular.ai.speech.types.RecognitionAudio`
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -60,9 +59,12 @@ class SpeechClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        request = sppt_pb.RecognizeRequest(
-            config=config, audio=audio
+        request = sppt_pb.RecognizeRequest(config=config, audio=audio)
+
+        return self.client.Recognize(
+            request,
+            metadata=(
+                ('key', 'value'),
+                (self.AUTHORIZATION, self.access_token),
+            )
         )
-        results = self.client.Recognize(request)
-        return results
-    

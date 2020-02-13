@@ -1,19 +1,14 @@
-import proto.speech_to_text_pb2 as sppt_pb
-import proto.speech_to_text_pb2_grpc as sppt_grpc_pb
-import grpc
+from __future__ import absolute_import
 
-class Sttp_Client(object):
+from vernacular.ai.speech import speech_client
+from vernacular.ai.speech import types
+from vernacular.ai.speech import enums
 
-    def __init__(self, channel=None):
-        STTP_HOST = os.environ.get('STTP_HOST', "grpc://host:port")
-        if STTP_HOST.startswith("grpc://"):
-            STTP_HOST = STTP_HOST[len("grpc://"):]
-        self.channel = grpc.insecure_channel(STTP_HOST)
-        self.client = sppt_grpc_pb.SpeechToTextStub(self.channel)
-    
-    def recognize(self, config, audio, token, uuid, timeout, segment):
-        
-        request = sppt_pb.RecognizeRequest(config=config, audio=audio, token=token , uuid=uuid, segment=segment)
-        results = self.client.Recognize(request, timeout=timeout)
-        return results
-    
+
+class SpeechClient(speech_client.SpeechClient):
+    __doc__ = speech_client.SpeechClient.__doc__
+    enums = enums
+    types = types
+
+
+__all__ = ("SpeechClient", "enums", "types")

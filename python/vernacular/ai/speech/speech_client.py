@@ -10,6 +10,7 @@ class SpeechClient(object):
 
     STTP_GRPC_HOST = "speechapis.vernacular.ai:80"
     AUTHORIZATION = "authorization"
+    DEFAULT_TIMEOUT = 30
 
     def __init__(self, access_token):
         """Constructor.
@@ -32,7 +33,7 @@ class SpeechClient(object):
             >>> client = speech.SpeechClient()
             >>>
             >>> encoding = enums.RecognitionConfig.AudioEncoding.LINEAR16
-            >>> sample_rate_hertz = 16000
+            >>> sample_rate_hertz = 8000
             >>> language_code = 'en-IN'
             >>> config = {'encoding': encoding, 'sample_rate_hertz': sample_rate_hertz, 'language_code': language_code}
             >>> content = open('path/to/audio/file.wav', 'rb').read()
@@ -48,8 +49,7 @@ class SpeechClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~vernacular.ai.speech.types.RecognitionAudio`
             timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
+                for the request to complete. Default value is `30s`.
         Returns:
             A :class:`~vernacular.ai.speech.types.RecognizeResponse` instance.
         Raises:
@@ -60,11 +60,11 @@ class SpeechClient(object):
             ValueError: If the parameters are invalid.
         """
         request = sppt_pb.RecognizeRequest(config=config, audio=audio)
+        if timeout is None:
+            timeout = self.DEFAULT_TIMEOUT
 
         return self.client.Recognize(
             request,
-            metadata=(
-                ('key', 'value'),
-                (self.AUTHORIZATION, self.access_token),
-            )
+            timeout=timeout,
+            metadata=[(self.AUTHORIZATION, self.access_token)]
         )

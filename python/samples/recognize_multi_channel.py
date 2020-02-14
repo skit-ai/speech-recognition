@@ -6,6 +6,14 @@ import os
 def sample_recognize(access_token, file_path):
     speech_client = speech.SpeechClient(access_token)
 
+    # The number of channels in the input audio file
+    audio_channel_count = 2
+
+    # When set to true, each audio channel will be recognized separately.
+    # The recognition result will contain a channel_tag field to state which
+    # channel that result belongs to
+    enable_separate_recognition_per_channel = True
+
     audio = types.RecognitionAudio(
         content = open(file_path, "rb").read()
     )
@@ -14,15 +22,16 @@ def sample_recognize(access_token, file_path):
         sample_rate_hertz=8000,
         language_code = "hi-IN",
         max_alternatives = 1,
+        enable_separate_recognition_per_channel=enable_separate_recognition_per_channel,
+        audio_channel_count=audio_channel_count,
     )
 
     response = speech_client.recognize(audio=audio, config=config)
 
     for result in response.results:
-        # First alternative is the most probable result
         alternative = result.alternatives[0]
         print(u"Transcript: {}".format(alternative.transcript))
-        print(u"Confidence: {}".format(alternative.confidence))
+        print(u"ChannelTag: {}".format(result.channel_tag))
 
 
 def main():

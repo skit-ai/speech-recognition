@@ -123,7 +123,7 @@ message StreamingRecognizeResponse {
 
 message SpeechRecognitionResult {
   repeated SpeechRecognitionAlternative alternatives = 1;
-  int32 channelTag = 2;
+  int32 channel_tag = 2;
 }
 
 message StreamingRecognitionResult {

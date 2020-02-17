@@ -6,6 +6,8 @@ import os
 def sample_recognize(access_token, file_path):
     speech_client = speech.SpeechClient(access_token)
 
+    enable_word_time_offsets = True
+
     audio = types.RecognitionAudio(
         content = open(file_path, "rb").read()
     )
@@ -14,6 +16,7 @@ def sample_recognize(access_token, file_path):
         sample_rate_hertz=8000,
         language_code = "hi-IN",
         max_alternatives = 1,
+        enable_word_time_offsets=enable_word_time_offsets
     )
 
     response = speech_client.recognize(audio=audio, config=config)
@@ -22,7 +25,7 @@ def sample_recognize(access_token, file_path):
         # First alternative is the most probable result
         alternative = result.alternatives[0]
         print(u"Transcript: {}".format(alternative.transcript))
-        print(u"Confidence: {}".format(alternative.confidence))
+        print(u"Words: {}".format(alternative.words))
 
 
 def main():

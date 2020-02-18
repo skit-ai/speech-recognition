@@ -21,7 +21,9 @@ with io.open(readme_filename, encoding="utf-8") as readme_file:
 # Only include packages under the 'vernacular' namespace. Do not include tests,
 # benchmarks, etc.
 packages = [
-    "vernacular.ai.speech"
+    "vernacular.ai.speech",
+    "vernacular.ai.speech.proto",
+    "vernacular.ai.exceptions",
 ]
 
 # Determine which namespaces are needed.

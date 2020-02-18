@@ -26,7 +26,7 @@ def sample_recognize(access_token, file_path):
         audio_channel_count=audio_channel_count,
     )
 
-    response = speech_client.recognize(audio=audio, config=config)
+    response = speech_client.recognize(audio=audio, config=config, timeout=60)
 
     for result in response.results:
         alternative = result.alternatives[0]

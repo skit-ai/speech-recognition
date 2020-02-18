@@ -1,6 +1,8 @@
+import grpc
+
 from vernacular.ai.speech.proto import speech_to_text_pb2 as sppt_pb
 from vernacular.ai.speech.proto import speech_to_text_pb2_grpc as sppt_grpc_pb
-import grpc
+from vernacular.ai.exceptions import VernacularAPICallError
 
 
 class SpeechClient(object):
@@ -41,8 +43,8 @@ class SpeechClient(object):
             >>>
             >>> response = client.recognize(config, audio)
         Args:
-            config (Union[dict, ~vernacular.ai.speech.types.RecognitionConfig]): Required. Provides information to the recognizer that specifies how to
-                process the request.
+            config (Union[dict, ~vernacular.ai.speech.types.RecognitionConfig]): Required. Provides information to the
+                recognizer that specifies how to process the request.
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~vernacular.ai.speech.types.RecognitionConfig`
             audio (Union[dict, ~vernacular.ai.speech.types.RecognitionAudio]): Required. The audio data to be recognized.
@@ -53,18 +55,21 @@ class SpeechClient(object):
         Returns:
             A :class:`~vernacular.ai.speech.types.RecognizeResponse` instance.
         Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
+            vernacular.ai.exceptions.VernacularAPICallError: If the request
                     failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
         request = sppt_pb.RecognizeRequest(config=config, audio=audio)
         if timeout is None:
             timeout = self.DEFAULT_TIMEOUT
 
-        return self.client.Recognize(
-            request,
-            timeout=timeout,
-            metadata=[(self.AUTHORIZATION, self.access_token)]
-        )
+        response = None
+        try:
+            response = self.client.Recognize(
+                request,
+                timeout=timeout,
+                metadata=[(self.AUTHORIZATION, self.access_token)]
+            )
+            return response
+        except Exception as e:
+            raise VernacularAPICallError(message=str(e),response=response)

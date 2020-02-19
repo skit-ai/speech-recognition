@@ -1,4 +1,5 @@
 import grpc
+import time
 
 from vernacular.ai.speech.proto import speech_to_text_pb2 as sppt_pb
 from vernacular.ai.speech.proto import speech_to_text_pb2_grpc as sppt_grpc_pb
@@ -73,3 +74,86 @@ class SpeechClient(object):
             return response
         except Exception as e:
             raise VernacularAPICallError(message=str(e),response=response)
+
+
+    def long_running_recognize(self, config, audio, timeout=None, poll_time=8):
+        """
+        Performs asynchronous speech recognition: receive results via the
+        google.longrunning.Operations interface. Returns either an
+        ``Operation.error`` or an ``Operation.response`` which contains a
+        ``LongRunningRecognizeResponse`` message. For more information on
+        asynchronous speech recognition, see the
+        `how-to <https://github.com/Vernacular-ai/speech-recognition/blob/master/docs/rpc_reference/LongRunningRecognize.md>`__.
+        Example:
+            >>> from vernacular.ai import speech
+            >>> from vernacular.ai.speech import enums
+            >>>
+            >>> client = speech.SpeechClient()
+            >>>
+            >>> encoding = enums.RecognitionConfig.AudioEncoding.LINEAR16
+            >>> sample_rate_hertz = 8000
+            >>> language_code = 'en-IN'
+            >>> config = {'encoding': encoding, 'sample_rate_hertz': sample_rate_hertz, 'language_code': language_code}
+            >>> content = open('path/to/audio/file.wav', 'rb').read()
+            >>> audio = {'content': content}
+            >>>
+            >>> response = client.long_running_recognize(config, audio)
+            >>>
+            >>> def callback(operation_future):
+            ...     # Handle result.
+            ...     result = operation_future.result()
+            >>>
+            >>> response.add_done_callback(callback)
+        Args:
+            config (Union[dict, ~vernacular.ai.speech.types.RecognitionConfig]): Required. Provides information to the
+                recognizer that specifies how to process the request.
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~vernacular.ai.speech.types.RecognitionConfig`
+            audio (Union[dict, ~vernacular.ai.speech.types.RecognitionAudio]): Required. The audio data to be recognized.
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~vernacular.ai.speech.types.RecognitionAudio`
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Default value is `30s`.
+            poll_time (Optional[float]): The amount of time, in seconds, for which results
+                should be polled. Default value is `8s`. Min value is 5s.
+        Returns:
+            A :class:`~vernacular.ai.speech.types.RecognizeResponse` instance.
+        Raises:
+            vernacular.ai.exceptions.VernacularAPICallError: If the request
+                    failed for any reason.
+            ValueError: If the parameters are invalid.
+        """
+        request = sppt_pb.LongRunningRecognizeRequest(config=config, audio=audio)
+        if timeout is None:
+            timeout = self.DEFAULT_TIMEOUT
+        
+        speech_operation = None
+        try:
+            speech_operation = self.client.LongRunningRecognize(
+                request,
+                timeout=timeout,
+                metadata=[(self.AUTHORIZATION, self.access_token)]
+            )
+        except Exception as e:
+            raise VernacularAPICallError(message=str(e),response=speech_operation)
+        
+        # set minimum value for poll time
+        if poll_time < 5:
+            poll_time = 5
+        
+        operation_request = sppt_pb.SpeechOperationRequest(name=speech_operation.name)
+        response = None
+        is_done = False
+        try:
+            while not is_done:
+                time.sleep(poll_time)
+                response = self.client.GetSpeechOperation(
+                    operation_request,
+                    timeout=timeout,
+                    metadata=[(self.AUTHORIZATION, self.access_token)]
+                )
+                is_done = response.done
+
+            return response
+        except Exception as e:
+            raise VernacularAPICallError(message=str(e),response=speech_operation)

@@ -30,8 +30,8 @@ def sample_recognize(access_token, file_path):
 
     for result in response.results:
         alternative = result.alternatives[0]
-        print(u"Transcript: {}".format(alternative.transcript))
-        print(u"ChannelTag: {}".format(result.channel_tag))
+        print("Transcript: {}".format(alternative.transcript))
+        print("ChannelTag: {}".format(result.channel_tag))
 
 
 def main():

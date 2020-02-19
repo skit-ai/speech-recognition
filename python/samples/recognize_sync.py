@@ -21,8 +21,8 @@ def sample_recognize(access_token, file_path):
     for result in response.results:
         # First alternative is the most probable result
         alternative = result.alternatives[0]
-        print(u"Transcript: {}".format(alternative.transcript))
-        print(u"Confidence: {}".format(alternative.confidence))
+        print("Transcript: {}".format(alternative.transcript))
+        print("Confidence: {}".format(alternative.confidence))
 
 
 def main():

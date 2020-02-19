@@ -3,10 +3,8 @@ from vernacular.ai.speech import enums, types
 import os
 
 
-def sample_recognize(access_token, file_path):
+def sample_recognize_async(access_token, file_path):
     speech_client = speech.SpeechClient(access_token)
-
-    enable_word_time_offsets = True
 
     audio = types.RecognitionAudio(
         content = open(file_path, "rb").read()
@@ -15,17 +13,19 @@ def sample_recognize(access_token, file_path):
         encoding=enums.RecognitionConfig.AudioEncoding.LINEAR16,
         sample_rate_hertz=8000,
         language_code = "hi-IN",
-        max_alternatives = 1,
-        enable_word_time_offsets=enable_word_time_offsets
+        max_alternatives = 2,
     )
 
-    response = speech_client.recognize(audio=audio, config=config)
+    speech_operation = speech_client.long_running_recognize(audio=audio, config=config)
+
+    print("Waiting for operation to complete...")
+    response = speech_operation.response
 
     for result in response.results:
         # First alternative is the most probable result
         alternative = result.alternatives[0]
         print("Transcript: {}".format(alternative.transcript))
-        print("Words: {}".format(alternative.words))
+        print("Confidence: {}".format(alternative.confidence))
 
 
 def main():
@@ -40,7 +40,7 @@ def main():
     )
     args = parser.parse_args()
 
-    sample_recognize(args.access_token, args.file_path)
+    sample_recognize_async(args.access_token, args.file_path)
 
 
 if __name__ == "__main__":

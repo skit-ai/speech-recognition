@@ -24,6 +24,16 @@ class SpeechToTextStub(object):
         request_serializer=speech__to__text__pb2.StreamingRecognizeRequest.SerializeToString,
         response_deserializer=speech__to__text__pb2.StreamingRecognizeResponse.FromString,
         )
+    self.LongRunningRecognize = channel.unary_unary(
+        '/speech_to_text.SpeechToText/LongRunningRecognize',
+        request_serializer=speech__to__text__pb2.LongRunningRecognizeRequest.SerializeToString,
+        response_deserializer=speech__to__text__pb2.SpeechOperation.FromString,
+        )
+    self.GetSpeechOperation = channel.unary_unary(
+        '/speech_to_text.SpeechToText/GetSpeechOperation',
+        request_serializer=speech__to__text__pb2.SpeechOperationRequest.SerializeToString,
+        response_deserializer=speech__to__text__pb2.SpeechOperation.FromString,
+        )
 
 
 class SpeechToTextServicer(object):
@@ -31,7 +41,7 @@ class SpeechToTextServicer(object):
   pass
 
   def Recognize(self, request, context):
-    """Performs synchronous non-streaming speech recognition;
+    """Performs synchronous non-streaming speech recognition
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
@@ -40,6 +50,20 @@ class SpeechToTextServicer(object):
   def StreamingRecognize(self, request_iterator, context):
     """Performs bidirectional streaming speech recognition: receive results while
     sending audio. This method is only available via the gRPC API (not REST).
+    """
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+  def LongRunningRecognize(self, request, context):
+    """Performs asynchronous non-streaming speech recognition
+    """
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+  def GetSpeechOperation(self, request, context):
+    """Returns SpeechOperation for LongRunningRecognize. Used for polling the result
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
@@ -57,6 +81,16 @@ def add_SpeechToTextServicer_to_server(servicer, server):
           servicer.StreamingRecognize,
           request_deserializer=speech__to__text__pb2.StreamingRecognizeRequest.FromString,
           response_serializer=speech__to__text__pb2.StreamingRecognizeResponse.SerializeToString,
+      ),
+      'LongRunningRecognize': grpc.unary_unary_rpc_method_handler(
+          servicer.LongRunningRecognize,
+          request_deserializer=speech__to__text__pb2.LongRunningRecognizeRequest.FromString,
+          response_serializer=speech__to__text__pb2.SpeechOperation.SerializeToString,
+      ),
+      'GetSpeechOperation': grpc.unary_unary_rpc_method_handler(
+          servicer.GetSpeechOperation,
+          request_deserializer=speech__to__text__pb2.SpeechOperationRequest.FromString,
+          response_serializer=speech__to__text__pb2.SpeechOperation.SerializeToString,
       ),
   }
   generic_handler = grpc.method_handlers_generic_handler(

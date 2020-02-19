@@ -4,12 +4,17 @@ package speech_to_text;
 import "google/rpc/status.proto";
 
 service SpeechToText {
-  // Performs synchronous non-streaming speech recognition;
+  // Performs synchronous non-streaming speech recognition
   rpc Recognize(RecognizeRequest) returns (RecognizeResponse) {}
 
   // Performs bidirectional streaming speech recognition: receive results while
   // sending audio. This method is only available via the gRPC API (not REST).
   rpc StreamingRecognize(stream StreamingRecognizeRequest) returns (stream StreamingRecognizeResponse) {}
+
+  // Performs asynchronous non-streaming speech recognition
+  rpc LongRunningRecognize(LongRunningRecognizeRequest) returns (SpeechOperation) {}
+  // Returns SpeechOperation for LongRunningRecognize. Used for polling the result
+  rpc GetSpeechOperation(SpeechOperationRequest) returns (SpeechOperation) {}
 }
 
 //--------------------------------------------
@@ -24,6 +29,25 @@ message RecognizeRequest {
   RecognitionAudio audio = 2;
 
   string segment = 16;
+}
+
+message LongRunningRecognizeRequest {
+  // Required. Provides information to the recognizer that specifies how to
+  // process the request.
+  RecognitionConfig config = 1;
+
+  // Required. The audio data to be recognized.
+  RecognitionAudio audio = 2;
+
+  // Optional. When operation completes, result is posted to this url if provided.
+  string result_url = 11;
+
+  string segment = 16;
+}
+
+message SpeechOperationRequest {
+  // name of the speech operation
+  string name = 1;
 }
 
 message StreamingRecognizeRequest {
@@ -109,6 +133,10 @@ message RecognizeResponse {
   repeated SpeechRecognitionResult results = 1;
 }
 
+message LongRunningRecognizeResponse {
+  repeated SpeechRecognitionResult results = 1;
+}
+
 message StreamingRecognizeResponse {
   // If set, returns a [google.rpc.Status][google.rpc.Status] message that
   // specifies the error for the operation.
@@ -167,4 +195,16 @@ message WordInfo {
   float start_time = 1;
 	float end_time = 2;
 	string word = 3;
+}
+
+message SpeechOperation {
+  string name = 1;
+  bool done = 2;
+  oneof result {
+    // If set, returns a [google.rpc.Status][google.rpc.Status] message that
+    // specifies the error for the operation.
+    google.rpc.Status error = 3;
+
+    LongRunningRecognizeResponse response = 4;
+  }
 }

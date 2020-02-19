@@ -24,7 +24,7 @@ To get access to our APIs reach out to us at hello@vernacular.ai
 
 We recommend that you call this service using Vernacular provided client libraries. If your application needs to call this service using your own libraries, you should use the HTTP Endpoints.
 
-**Supported SDKs**: [Python](python/README.md), [Go](go/README.md)
+**Supported SDKs**: [Python](https://github.com/Vernacular-ai/speech-recognition/tree/master/python), [Go](https://github.com/Vernacular-ai/speech-recognition/tree/master/go)
 
 
 ## REST Reference

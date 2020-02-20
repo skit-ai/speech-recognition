@@ -1,8 +1,7 @@
 import io
 import os
 
-from distutils.core import setup
-import setuptools
+from setuptools import setup
 
 
 name = "vernacular-ai-speech"

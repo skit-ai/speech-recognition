@@ -120,7 +120,7 @@ class SpeechClient(object):
             A :class:`~vernacular.ai.speech.types.RecognizeResponse` instance.
         Raises:
             vernacular.ai.exceptions.VernacularAPICallError: If the request
-                    failed for any reason.
+                failed for any reason.
             ValueError: If the parameters are invalid.
         """
         request = sppt_pb.LongRunningRecognizeRequest(config=config, audio=audio)
@@ -157,3 +157,39 @@ class SpeechClient(object):
             return response
         except Exception as e:
             raise VernacularAPICallError(message=str(e),response=speech_operation)
+
+
+    def streaming_recognize(self, requests, timeout=None):
+        """
+        Performs bidirectional streaming speech recognition: receive results while
+        sending audio. This method is only available via the gRPC API (not REST).
+        Example:
+            >>> from vernacular.ai import speech
+            >>>
+            >>> client = speech.SpeechClient()
+            >>>
+            >>> request = {}
+            >>>
+            >>> requests = [request]
+            >>> for element in client.streaming_recognize(requests):
+            ...     # process element
+            ...     pass
+        Args:
+            requests (iterator[dict|vernacular.ai.speech.types.StreamingRecognizeRequest]):
+                The input objects. If a dict is provided, it must be of the
+                same form as the protobuf message:class:`~vernacular.ai.speech.types.StreamingRecognizeRequest`
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Default value is `30s`.
+        Returns:
+            Iterable[~vernacular.ai.speech.types.StreamingRecognizeResponse].
+        Raises:
+            vernacular.ai.exceptions.VernacularAPICallError: If the request
+                failed for any reason.
+            ValueError: If the parameters are invalid.
+        """
+        if timeout is None:
+            timeout = self.DEFAULT_TIMEOUT
+        if len(requests) == 0:
+            raise ValueError("no requests found")
+
+        raise NotImplementedError   

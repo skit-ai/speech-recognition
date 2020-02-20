@@ -14,7 +14,7 @@ extras = {}
 package_root = os.path.abspath(os.path.dirname(__file__))
 
 readme_filename = os.path.join(package_root, "README.md")
-with io.open(readme_filename, encoding="utf-8") as readme_file:
+with io.open(readme_filename, "r") as readme_file:
     readme = readme_file.read()
 
 # Only include packages under the 'vernacular' namespace. Do not include tests,
@@ -32,6 +32,7 @@ setup(
     name=name,
     version=version,
     description=description,
+    long_description_content_type="text/markdown",
     long_description=readme,
     author="Vernacular.ai",
     author_email="deepankar@vernacular.ai",

@@ -5,4 +5,6 @@ dependencies {
     implementation "io.grpc:grpc-okhttp:${grpcVersion}"
     implementation "io.grpc:grpc-protobuf-lite:${protobufVersion}"
     implementation "io.grpc:grpc-stub:${grpcVersion}"
+
+    implementation project(':proto-vernacular-ai-speech')
 }

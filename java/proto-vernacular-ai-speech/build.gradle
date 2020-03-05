@@ -1,0 +1,7 @@
+def grpcVersion = '1.27.2'
+def protobufVersion = '1.27.2'
+
+dependencies {
+    implementation "io.grpc:grpc-protobuf-lite:${protobufVersion}"
+    compile "com.google.api.grpc:proto-google-common-protos:1.17.0"
+}

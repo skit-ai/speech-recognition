@@ -29,11 +29,12 @@ class SpeechClient(object):
         """
         Performs synchronous speech recognition: receive results after all audio
         has been sent and processed.
+
         Example:
             >>> from vernacular.ai import speech
             >>> from vernacular.ai.speech import enums
             >>>
-            >>> client = speech.SpeechClient()
+            >>> client = speech.SpeechClient(access_token)
             >>>
             >>> encoding = enums.RecognitionConfig.AudioEncoding.LINEAR16
             >>> sample_rate_hertz = 8000
@@ -76,19 +77,19 @@ class SpeechClient(object):
             raise VernacularAPICallError(message=str(e),response=response)
 
 
-    def long_running_recognize(self, config, audio, timeout=None, poll_time=8):
+    def long_running_recognize(self, config, audio, timeout=None, poll_time=8, callback=None):
         """
-        Performs asynchronous speech recognition: receive results via the
-        google.longrunning.Operations interface. Returns either an
+        Performs asynchronous speech recognition. Returns either an
         ``Operation.error`` or an ``Operation.response`` which contains a
         ``LongRunningRecognizeResponse`` message. For more information on
         asynchronous speech recognition, see the
-        `how-to <https://github.com/Vernacular-ai/speech-recognition/blob/master/docs/rpc_reference/LongRunningRecognize.md>`__.
+        `how-to <https://github.com/Vernacular-ai/speech-recognition/blob/master/docs/rpc_reference/LongRunningRecognize.md>`.
+
         Example:
             >>> from vernacular.ai import speech
             >>> from vernacular.ai.speech import enums
             >>>
-            >>> client = speech.SpeechClient()
+            >>> client = speech.SpeechClient(access_token)
             >>>
             >>> encoding = enums.RecognitionConfig.AudioEncoding.LINEAR16
             >>> sample_rate_hertz = 8000
@@ -97,13 +98,11 @@ class SpeechClient(object):
             >>> content = open('path/to/audio/file.wav', 'rb').read()
             >>> audio = {'content': content}
             >>>
-            >>> response = client.long_running_recognize(config, audio)
-            >>>
-            >>> def callback(operation_future):
+            >>> def handle_result(result):
             ...     # Handle result.
-            ...     result = operation_future.result()
+            ...     print(result)
             >>>
-            >>> response.add_done_callback(callback)
+            >>> response = client.long_running_recognize(config, audio, callback=handle_result)
         Args:
             config (Union[dict, ~vernacular.ai.speech.types.RecognitionConfig]): Required. Provides information to the
                 recognizer that specifies how to process the request.
@@ -116,8 +115,9 @@ class SpeechClient(object):
                 for the request to complete. Default value is `30s`.
             poll_time (Optional[float]): The amount of time, in seconds, for which results
                 should be polled. Default value is `8s`. Min value is 5s.
+            callback (Optional): Function to handle response
         Returns:
-            A :class:`~vernacular.ai.speech.types.RecognizeResponse` instance.
+            A :class:`~vernacular.ai.speech.types.SpeechOperation` instance.
         Raises:
             vernacular.ai.exceptions.VernacularAPICallError: If the request
                 failed for any reason.

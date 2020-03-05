@@ -7,6 +7,7 @@ from google.rpc import status_pb2
 from google.protobuf.message import Message
 
 from vernacular.ai.speech.proto import speech_to_text_pb2
+from vernacular.ai.speech.utils import _SpeechOperation
 
 
 _shared_modules = [status_pb2]

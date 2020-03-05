@@ -1,11 +1,24 @@
 syntax = "proto3";
 package speech_to_text;
 
+import "google/api/annotations.proto";
+import "google/api/client.proto";
+import "google/api/field_behavior.proto";
 import "google/rpc/status.proto";
+
+option java_multiple_files = true;
+option java_outer_classname = "SpeechToTextProto";
+option java_package = "ai.vernacular.speech";
 
 service SpeechToText {
   // Performs synchronous non-streaming speech recognition
-  rpc Recognize(RecognizeRequest) returns (RecognizeResponse) {}
+  rpc Recognize(RecognizeRequest) returns (RecognizeResponse) {
+    option (google.api.http) = {
+      post: "/v1/speech:recognize"
+      body: "*"
+    };
+    option (google.api.method_signature) = "config,audio";
+  }
 
   // Performs bidirectional streaming speech recognition: receive results while
   // sending audio. This method is only available via the gRPC API (not REST).
@@ -14,7 +27,11 @@ service SpeechToText {
   // Performs asynchronous non-streaming speech recognition
   rpc LongRunningRecognize(LongRunningRecognizeRequest) returns (SpeechOperation) {}
   // Returns SpeechOperation for LongRunningRecognize. Used for polling the result
-  rpc GetSpeechOperation(SpeechOperationRequest) returns (SpeechOperation) {}
+  rpc GetSpeechOperation(SpeechOperationRequest) returns (SpeechOperation) {
+    option (google.api.http) = {
+      get: "/v1/speech_operations/{name}"
+    };
+  }
 }
 
 //--------------------------------------------
@@ -23,10 +40,10 @@ service SpeechToText {
 message RecognizeRequest {
   // Required. Provides information to the recognizer that specifies how to
   // process the request.
-  RecognitionConfig config = 1;
+  RecognitionConfig config = 1 [(google.api.field_behavior) = REQUIRED];
 
   // Required. The audio data to be recognized.
-  RecognitionAudio audio = 2;
+  RecognitionAudio audio = 2 [(google.api.field_behavior) = REQUIRED];
 
   string segment = 16;
 }
@@ -34,10 +51,10 @@ message RecognizeRequest {
 message LongRunningRecognizeRequest {
   // Required. Provides information to the recognizer that specifies how to
   // process the request.
-  RecognitionConfig config = 1;
+  RecognitionConfig config = 1 [(google.api.field_behavior) = REQUIRED];
 
   // Required. The audio data to be recognized.
-  RecognitionAudio audio = 2;
+  RecognitionAudio audio = 2 [(google.api.field_behavior) = REQUIRED];
 
   // Optional. When operation completes, result is posted to this url if provided.
   string result_url = 11;
@@ -47,7 +64,7 @@ message LongRunningRecognizeRequest {
 
 message SpeechOperationRequest {
   // name of the speech operation
-  string name = 1;
+  string name = 1 [(google.api.field_behavior) = REQUIRED];
 }
 
 message StreamingRecognizeRequest {
@@ -66,7 +83,7 @@ message StreamingRecognizeRequest {
 message StreamingRecognitionConfig {
   // Required. Provides information to the recognizer that specifies how to
   // process the request.
-  RecognitionConfig config = 1;
+  RecognitionConfig config = 1 [(google.api.field_behavior) = REQUIRED];
 
   // If `true`, interim results (tentative hypotheses) may be
   // returned as they become available (these interim results are indicated with
@@ -86,7 +103,7 @@ message RecognitionConfig {
 
   AudioEncoding encoding = 1;
   int32 sample_rate_hertz = 2; // Valid values are: 8000-48000.
-  string language_code = 3;
+  string language_code = 3 [(google.api.field_behavior) = REQUIRED];
   int32 max_alternatives = 4;
   repeated SpeechContext speech_contexts = 5;
   int32 audio_channel_count = 6;

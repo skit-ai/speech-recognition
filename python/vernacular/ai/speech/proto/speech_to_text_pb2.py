@@ -11,6 +11,9 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
+from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
+from google.api import client_pb2 as google_dot_api_dot_client__pb2
+from google.api import field_behavior_pb2 as google_dot_api_dot_field__behavior__pb2
 from google.rpc import status_pb2 as google_dot_rpc_dot_status__pb2
 
 
@@ -18,10 +21,10 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='speech-to-text.proto',
   package='speech_to_text',
   syntax='proto3',
-  serialized_options=None,
-  serialized_pb=b'\n\x14speech-to-text.proto\x12\x0espeech_to_text\x1a\x17google/rpc/status.proto\"\x87\x01\n\x10RecognizeRequest\x12\x31\n\x06\x63onfig\x18\x01 \x01(\x0b\x32!.speech_to_text.RecognitionConfig\x12/\n\x05\x61udio\x18\x02 \x01(\x0b\x32 .speech_to_text.RecognitionAudio\x12\x0f\n\x07segment\x18\x10 \x01(\t\"\xa6\x01\n\x1bLongRunningRecognizeRequest\x12\x31\n\x06\x63onfig\x18\x01 \x01(\x0b\x32!.speech_to_text.RecognitionConfig\x12/\n\x05\x61udio\x18\x02 \x01(\x0b\x32 .speech_to_text.RecognitionAudio\x12\x12\n\nresult_url\x18\x0b \x01(\t\x12\x0f\n\x07segment\x18\x10 \x01(\t\"&\n\x16SpeechOperationRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"\x91\x01\n\x19StreamingRecognizeRequest\x12\x46\n\x10streaming_config\x18\x01 \x01(\x0b\x32*.speech_to_text.StreamingRecognitionConfigH\x00\x12\x17\n\raudio_content\x18\x02 \x01(\x0cH\x00\x42\x13\n\x11streaming_request\"h\n\x1aStreamingRecognitionConfig\x12\x31\n\x06\x63onfig\x18\x01 \x01(\x0b\x32!.speech_to_text.RecognitionConfig\x12\x17\n\x0finterim_results\x18\x02 \x01(\x08\"\x82\x04\n\x11RecognitionConfig\x12\x41\n\x08\x65ncoding\x18\x01 \x01(\x0e\x32/.speech_to_text.RecognitionConfig.AudioEncoding\x12\x19\n\x11sample_rate_hertz\x18\x02 \x01(\x05\x12\x15\n\rlanguage_code\x18\x03 \x01(\t\x12\x18\n\x10max_alternatives\x18\x04 \x01(\x05\x12\x36\n\x0fspeech_contexts\x18\x05 \x03(\x0b\x32\x1d.speech_to_text.SpeechContext\x12\x1b\n\x13\x61udio_channel_count\x18\x06 \x01(\x05\x12/\n\'enable_separate_recognition_per_channel\x18\x07 \x01(\x08\x12 \n\x18\x65nable_word_time_offsets\x18\x08 \x01(\x08\x12$\n\x1c\x65nable_automatic_punctuation\x18\x0b \x01(\x08\x12\x44\n\x12\x64iarization_config\x18\x10 \x01(\x0b\x32(.speech_to_text.SpeakerDiarizationConfig\"J\n\rAudioEncoding\x12\x18\n\x14\x45NCODING_UNSPECIFIED\x10\x00\x12\x0c\n\x08LINEAR16\x10\x01\x12\x08\n\x04\x46LAC\x10\x02\x12\x07\n\x03MP3\x10\x03\" \n\rSpeechContext\x12\x0f\n\x07phrases\x18\x01 \x03(\t\"t\n\x18SpeakerDiarizationConfig\x12\"\n\x1a\x65nable_speaker_diarization\x18\x01 \x01(\x08\x12\x19\n\x11min_speaker_count\x18\x02 \x01(\x05\x12\x19\n\x11max_speaker_count\x18\x03 \x01(\x05\"D\n\x10RecognitionAudio\x12\x11\n\x07\x63ontent\x18\x01 \x01(\x0cH\x00\x12\r\n\x03uri\x18\x02 \x01(\tH\x00\x42\x0e\n\x0c\x61udio_source\"M\n\x11RecognizeResponse\x12\x38\n\x07results\x18\x01 \x03(\x0b\x32\'.speech_to_text.SpeechRecognitionResult\"X\n\x1cLongRunningRecognizeResponse\x12\x38\n\x07results\x18\x01 \x03(\x0b\x32\'.speech_to_text.SpeechRecognitionResult\"|\n\x1aStreamingRecognizeResponse\x12!\n\x05\x65rror\x18\x01 \x01(\x0b\x32\x12.google.rpc.Status\x12;\n\x07results\x18\x02 \x03(\x0b\x32*.speech_to_text.StreamingRecognitionResult\"r\n\x17SpeechRecognitionResult\x12\x42\n\x0c\x61lternatives\x18\x01 \x03(\x0b\x32,.speech_to_text.SpeechRecognitionAlternative\x12\x13\n\x0b\x63hannel_tag\x18\x02 \x01(\x05\"\xb3\x01\n\x1aStreamingRecognitionResult\x12\x42\n\x0c\x61lternatives\x18\x01 \x03(\x0b\x32,.speech_to_text.SpeechRecognitionAlternative\x12\x10\n\x08is_final\x18\x02 \x01(\x08\x12\x11\n\tstability\x18\x03 \x01(\x02\x12\x17\n\x0fresult_end_time\x18\x04 \x01(\x02\x12\x13\n\x0b\x63hannel_tag\x18\x05 \x01(\x05\"o\n\x1cSpeechRecognitionAlternative\x12\x12\n\ntranscript\x18\x01 \x01(\t\x12\x12\n\nconfidence\x18\x02 \x01(\x02\x12\'\n\x05words\x18\x03 \x03(\x0b\x32\x18.speech_to_text.WordInfo\">\n\x08WordInfo\x12\x12\n\nstart_time\x18\x01 \x01(\x02\x12\x10\n\x08\x65nd_time\x18\x02 \x01(\x02\x12\x0c\n\x04word\x18\x03 \x01(\t\"\x9e\x01\n\x0fSpeechOperation\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0c\n\x04\x64one\x18\x02 \x01(\x08\x12#\n\x05\x65rror\x18\x03 \x01(\x0b\x32\x12.google.rpc.StatusH\x00\x12@\n\x08response\x18\x04 \x01(\x0b\x32,.speech_to_text.LongRunningRecognizeResponseH\x00\x42\x08\n\x06result2\x9e\x03\n\x0cSpeechToText\x12R\n\tRecognize\x12 .speech_to_text.RecognizeRequest\x1a!.speech_to_text.RecognizeResponse\"\x00\x12q\n\x12StreamingRecognize\x12).speech_to_text.StreamingRecognizeRequest\x1a*.speech_to_text.StreamingRecognizeResponse\"\x00(\x01\x30\x01\x12\x66\n\x14LongRunningRecognize\x12+.speech_to_text.LongRunningRecognizeRequest\x1a\x1f.speech_to_text.SpeechOperation\"\x00\x12_\n\x12GetSpeechOperation\x12&.speech_to_text.SpeechOperationRequest\x1a\x1f.speech_to_text.SpeechOperation\"\x00\x62\x06proto3'
+  serialized_options=b'\n\024ai.vernacular.speechB\021SpeechToTextProtoP\001',
+  serialized_pb=b'\n\x14speech-to-text.proto\x12\x0espeech_to_text\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x17google/rpc/status.proto\"\x91\x01\n\x10RecognizeRequest\x12\x36\n\x06\x63onfig\x18\x01 \x01(\x0b\x32!.speech_to_text.RecognitionConfigB\x03\xe0\x41\x02\x12\x34\n\x05\x61udio\x18\x02 \x01(\x0b\x32 .speech_to_text.RecognitionAudioB\x03\xe0\x41\x02\x12\x0f\n\x07segment\x18\x10 \x01(\t\"\xb0\x01\n\x1bLongRunningRecognizeRequest\x12\x36\n\x06\x63onfig\x18\x01 \x01(\x0b\x32!.speech_to_text.RecognitionConfigB\x03\xe0\x41\x02\x12\x34\n\x05\x61udio\x18\x02 \x01(\x0b\x32 .speech_to_text.RecognitionAudioB\x03\xe0\x41\x02\x12\x12\n\nresult_url\x18\x0b \x01(\t\x12\x0f\n\x07segment\x18\x10 \x01(\t\"+\n\x16SpeechOperationRequest\x12\x11\n\x04name\x18\x01 \x01(\tB\x03\xe0\x41\x02\"\x91\x01\n\x19StreamingRecognizeRequest\x12\x46\n\x10streaming_config\x18\x01 \x01(\x0b\x32*.speech_to_text.StreamingRecognitionConfigH\x00\x12\x17\n\raudio_content\x18\x02 \x01(\x0cH\x00\x42\x13\n\x11streaming_request\"m\n\x1aStreamingRecognitionConfig\x12\x36\n\x06\x63onfig\x18\x01 \x01(\x0b\x32!.speech_to_text.RecognitionConfigB\x03\xe0\x41\x02\x12\x17\n\x0finterim_results\x18\x02 \x01(\x08\"\x87\x04\n\x11RecognitionConfig\x12\x41\n\x08\x65ncoding\x18\x01 \x01(\x0e\x32/.speech_to_text.RecognitionConfig.AudioEncoding\x12\x19\n\x11sample_rate_hertz\x18\x02 \x01(\x05\x12\x1a\n\rlanguage_code\x18\x03 \x01(\tB\x03\xe0\x41\x02\x12\x18\n\x10max_alternatives\x18\x04 \x01(\x05\x12\x36\n\x0fspeech_contexts\x18\x05 \x03(\x0b\x32\x1d.speech_to_text.SpeechContext\x12\x1b\n\x13\x61udio_channel_count\x18\x06 \x01(\x05\x12/\n\'enable_separate_recognition_per_channel\x18\x07 \x01(\x08\x12 \n\x18\x65nable_word_time_offsets\x18\x08 \x01(\x08\x12$\n\x1c\x65nable_automatic_punctuation\x18\x0b \x01(\x08\x12\x44\n\x12\x64iarization_config\x18\x10 \x01(\x0b\x32(.speech_to_text.SpeakerDiarizationConfig\"J\n\rAudioEncoding\x12\x18\n\x14\x45NCODING_UNSPECIFIED\x10\x00\x12\x0c\n\x08LINEAR16\x10\x01\x12\x08\n\x04\x46LAC\x10\x02\x12\x07\n\x03MP3\x10\x03\" \n\rSpeechContext\x12\x0f\n\x07phrases\x18\x01 \x03(\t\"t\n\x18SpeakerDiarizationConfig\x12\"\n\x1a\x65nable_speaker_diarization\x18\x01 \x01(\x08\x12\x19\n\x11min_speaker_count\x18\x02 \x01(\x05\x12\x19\n\x11max_speaker_count\x18\x03 \x01(\x05\"D\n\x10RecognitionAudio\x12\x11\n\x07\x63ontent\x18\x01 \x01(\x0cH\x00\x12\r\n\x03uri\x18\x02 \x01(\tH\x00\x42\x0e\n\x0c\x61udio_source\"M\n\x11RecognizeResponse\x12\x38\n\x07results\x18\x01 \x03(\x0b\x32\'.speech_to_text.SpeechRecognitionResult\"X\n\x1cLongRunningRecognizeResponse\x12\x38\n\x07results\x18\x01 \x03(\x0b\x32\'.speech_to_text.SpeechRecognitionResult\"|\n\x1aStreamingRecognizeResponse\x12!\n\x05\x65rror\x18\x01 \x01(\x0b\x32\x12.google.rpc.Status\x12;\n\x07results\x18\x02 \x03(\x0b\x32*.speech_to_text.StreamingRecognitionResult\"r\n\x17SpeechRecognitionResult\x12\x42\n\x0c\x61lternatives\x18\x01 \x03(\x0b\x32,.speech_to_text.SpeechRecognitionAlternative\x12\x13\n\x0b\x63hannel_tag\x18\x02 \x01(\x05\"\xb3\x01\n\x1aStreamingRecognitionResult\x12\x42\n\x0c\x61lternatives\x18\x01 \x03(\x0b\x32,.speech_to_text.SpeechRecognitionAlternative\x12\x10\n\x08is_final\x18\x02 \x01(\x08\x12\x11\n\tstability\x18\x03 \x01(\x02\x12\x17\n\x0fresult_end_time\x18\x04 \x01(\x02\x12\x13\n\x0b\x63hannel_tag\x18\x05 \x01(\x05\"o\n\x1cSpeechRecognitionAlternative\x12\x12\n\ntranscript\x18\x01 \x01(\t\x12\x12\n\nconfidence\x18\x02 \x01(\x02\x12\'\n\x05words\x18\x03 \x03(\x0b\x32\x18.speech_to_text.WordInfo\">\n\x08WordInfo\x12\x12\n\nstart_time\x18\x01 \x01(\x02\x12\x10\n\x08\x65nd_time\x18\x02 \x01(\x02\x12\x0c\n\x04word\x18\x03 \x01(\t\"\x9e\x01\n\x0fSpeechOperation\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0c\n\x04\x64one\x18\x02 \x01(\x08\x12#\n\x05\x65rror\x18\x03 \x01(\x0b\x32\x12.google.rpc.StatusH\x00\x12@\n\x08response\x18\x04 \x01(\x0b\x32,.speech_to_text.LongRunningRecognizeResponseH\x00\x42\x08\n\x06result2\xf2\x03\n\x0cSpeechToText\x12\x80\x01\n\tRecognize\x12 .speech_to_text.RecognizeRequest\x1a!.speech_to_text.RecognizeResponse\".\x82\xd3\xe4\x93\x02\x19\"\x14/v1/speech:recognize:\x01*\xda\x41\x0c\x63onfig,audio\x12q\n\x12StreamingRecognize\x12).speech_to_text.StreamingRecognizeRequest\x1a*.speech_to_text.StreamingRecognizeResponse\"\x00(\x01\x30\x01\x12\x66\n\x14LongRunningRecognize\x12+.speech_to_text.LongRunningRecognizeRequest\x1a\x1f.speech_to_text.SpeechOperation\"\x00\x12\x83\x01\n\x12GetSpeechOperation\x12&.speech_to_text.SpeechOperationRequest\x1a\x1f.speech_to_text.SpeechOperation\"$\x82\xd3\xe4\x93\x02\x1e\x12\x1c/v1/speech_operations/{name}B+\n\x14\x61i.vernacular.speechB\x11SpeechToTextProtoP\x01\x62\x06proto3'
   ,
-  dependencies=[google_dot_rpc_dot_status__pb2.DESCRIPTOR,])
+  dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_api_dot_client__pb2.DESCRIPTOR,google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,google_dot_rpc_dot_status__pb2.DESCRIPTOR,])
 
 
 
@@ -50,8 +53,8 @@ _RECOGNITIONCONFIG_AUDIOENCODING = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=1107,
-  serialized_end=1181,
+  serialized_start=1230,
+  serialized_end=1304,
 )
 _sym_db.RegisterEnumDescriptor(_RECOGNITIONCONFIG_AUDIOENCODING)
 
@@ -69,14 +72,14 @@ _RECOGNIZEREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=b'\340A\002', file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='audio', full_name='speech_to_text.RecognizeRequest.audio', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=b'\340A\002', file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='segment', full_name='speech_to_text.RecognizeRequest.segment', index=2,
       number=16, type=9, cpp_type=9, label=1,
@@ -96,8 +99,8 @@ _RECOGNIZEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=66,
-  serialized_end=201,
+  serialized_start=154,
+  serialized_end=299,
 )
 
 
@@ -114,14 +117,14 @@ _LONGRUNNINGRECOGNIZEREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=b'\340A\002', file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='audio', full_name='speech_to_text.LongRunningRecognizeRequest.audio', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=b'\340A\002', file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='result_url', full_name='speech_to_text.LongRunningRecognizeRequest.result_url', index=2,
       number=11, type=9, cpp_type=9, label=1,
@@ -148,8 +151,8 @@ _LONGRUNNINGRECOGNIZEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=204,
-  serialized_end=370,
+  serialized_start=302,
+  serialized_end=478,
 )
 
 
@@ -166,7 +169,7 @@ _SPEECHOPERATIONREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=b'\340A\002', file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -179,8 +182,8 @@ _SPEECHOPERATIONREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=372,
-  serialized_end=410,
+  serialized_start=480,
+  serialized_end=523,
 )
 
 
@@ -220,8 +223,8 @@ _STREAMINGRECOGNIZEREQUEST = _descriptor.Descriptor(
       name='streaming_request', full_name='speech_to_text.StreamingRecognizeRequest.streaming_request',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=413,
-  serialized_end=558,
+  serialized_start=526,
+  serialized_end=671,
 )
 
 
@@ -238,7 +241,7 @@ _STREAMINGRECOGNITIONCONFIG = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=b'\340A\002', file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='interim_results', full_name='speech_to_text.StreamingRecognitionConfig.interim_results', index=1,
       number=2, type=8, cpp_type=7, label=1,
@@ -258,8 +261,8 @@ _STREAMINGRECOGNITIONCONFIG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=560,
-  serialized_end=664,
+  serialized_start=673,
+  serialized_end=782,
 )
 
 
@@ -290,7 +293,7 @@ _RECOGNITIONCONFIG = _descriptor.Descriptor(
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=b'\340A\002', file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='max_alternatives', full_name='speech_to_text.RecognitionConfig.max_alternatives', index=3,
       number=4, type=5, cpp_type=1, label=1,
@@ -353,8 +356,8 @@ _RECOGNITIONCONFIG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=667,
-  serialized_end=1181,
+  serialized_start=785,
+  serialized_end=1304,
 )
 
 
@@ -384,8 +387,8 @@ _SPEECHCONTEXT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1183,
-  serialized_end=1215,
+  serialized_start=1306,
+  serialized_end=1338,
 )
 
 
@@ -429,8 +432,8 @@ _SPEAKERDIARIZATIONCONFIG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1217,
-  serialized_end=1333,
+  serialized_start=1340,
+  serialized_end=1456,
 )
 
 
@@ -470,8 +473,8 @@ _RECOGNITIONAUDIO = _descriptor.Descriptor(
       name='audio_source', full_name='speech_to_text.RecognitionAudio.audio_source',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=1335,
-  serialized_end=1403,
+  serialized_start=1458,
+  serialized_end=1526,
 )
 
 
@@ -501,8 +504,8 @@ _RECOGNIZERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1405,
-  serialized_end=1482,
+  serialized_start=1528,
+  serialized_end=1605,
 )
 
 
@@ -532,8 +535,8 @@ _LONGRUNNINGRECOGNIZERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1484,
-  serialized_end=1572,
+  serialized_start=1607,
+  serialized_end=1695,
 )
 
 
@@ -570,8 +573,8 @@ _STREAMINGRECOGNIZERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1574,
-  serialized_end=1698,
+  serialized_start=1697,
+  serialized_end=1821,
 )
 
 
@@ -608,8 +611,8 @@ _SPEECHRECOGNITIONRESULT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1700,
-  serialized_end=1814,
+  serialized_start=1823,
+  serialized_end=1937,
 )
 
 
@@ -667,8 +670,8 @@ _STREAMINGRECOGNITIONRESULT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1817,
-  serialized_end=1996,
+  serialized_start=1940,
+  serialized_end=2119,
 )
 
 
@@ -712,8 +715,8 @@ _SPEECHRECOGNITIONALTERNATIVE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1998,
-  serialized_end=2109,
+  serialized_start=2121,
+  serialized_end=2232,
 )
 
 
@@ -757,8 +760,8 @@ _WORDINFO = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2111,
-  serialized_end=2173,
+  serialized_start=2234,
+  serialized_end=2296,
 )
 
 
@@ -812,8 +815,8 @@ _SPEECHOPERATION = _descriptor.Descriptor(
       name='result', full_name='speech_to_text.SpeechOperation.result',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=2176,
-  serialized_end=2334,
+  serialized_start=2299,
+  serialized_end=2457,
 )
 
 _RECOGNIZEREQUEST.fields_by_name['config'].message_type = _RECOGNITIONCONFIG
@@ -992,6 +995,14 @@ SpeechOperation = _reflection.GeneratedProtocolMessageType('SpeechOperation', (_
 _sym_db.RegisterMessage(SpeechOperation)
 
 
+DESCRIPTOR._options = None
+_RECOGNIZEREQUEST.fields_by_name['config']._options = None
+_RECOGNIZEREQUEST.fields_by_name['audio']._options = None
+_LONGRUNNINGRECOGNIZEREQUEST.fields_by_name['config']._options = None
+_LONGRUNNINGRECOGNIZEREQUEST.fields_by_name['audio']._options = None
+_SPEECHOPERATIONREQUEST.fields_by_name['name']._options = None
+_STREAMINGRECOGNITIONCONFIG.fields_by_name['config']._options = None
+_RECOGNITIONCONFIG.fields_by_name['language_code']._options = None
 
 _SPEECHTOTEXT = _descriptor.ServiceDescriptor(
   name='SpeechToText',
@@ -999,8 +1010,8 @@ _SPEECHTOTEXT = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=2337,
-  serialized_end=2751,
+  serialized_start=2460,
+  serialized_end=2958,
   methods=[
   _descriptor.MethodDescriptor(
     name='Recognize',
@@ -1009,7 +1020,7 @@ _SPEECHTOTEXT = _descriptor.ServiceDescriptor(
     containing_service=None,
     input_type=_RECOGNIZEREQUEST,
     output_type=_RECOGNIZERESPONSE,
-    serialized_options=None,
+    serialized_options=b'\202\323\344\223\002\031\"\024/v1/speech:recognize:\001*\332A\014config,audio',
   ),
   _descriptor.MethodDescriptor(
     name='StreamingRecognize',
@@ -1036,7 +1047,7 @@ _SPEECHTOTEXT = _descriptor.ServiceDescriptor(
     containing_service=None,
     input_type=_SPEECHOPERATIONREQUEST,
     output_type=_SPEECHOPERATION,
-    serialized_options=None,
+    serialized_options=b'\202\323\344\223\002\036\022\034/v1/speech_operations/{name}',
   ),
 ])
 _sym_db.RegisterServiceDescriptor(_SPEECHTOTEXT)

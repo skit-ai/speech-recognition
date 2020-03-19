@@ -43,3 +43,41 @@ The only message returned to the client by the recognize method. It contains the
   ]
 }
 ```
+
+### Sample Request and Response
+Request:
+```bash
+curl -X POST 'https://asr.vernacular.ai/v2/speech:recognize' \
+--header 'X-ACCESS-TOKEN: {{access-token}}' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "config": {
+      "encoding": "LINEAR16",
+      "sampleRateHertz": 8000,
+      "languageCode": "en-IN",
+      "maxAlternatives": 2
+    },
+    "audio": {
+      "uri": "https://audio-url.wav"
+    }
+}'
+```
+Response:
+```json
+{
+    "results": [
+        {
+            "alternatives": [
+                {
+                    "transcript": "i want to know my balance",
+                    "confidence": 0.95417684
+                },
+                {
+                    "transcript": "i want know balance",
+                    "confidence": 0.95404005
+                }
+            ]
+        }
+    ]
+}
+```

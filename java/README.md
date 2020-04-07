@@ -34,9 +34,9 @@ Then add this code to recognize the audio.
 
 ```java
 try (SpeechClient speechClient = SpeechClient.create(accessToken)) {
-   RecognitionConfig.AudioEncoding encoding = RecognitionConfig.AudioEncoding.FLAC;
-   int sampleRateHertz = 44100;
-   String languageCode = "en-US";
+   RecognitionConfig.AudioEncoding encoding = RecognitionConfig.AudioEncoding.LINEAR16;
+   int sampleRateHertz = 8000;
+   String languageCode = "en-IN";
    RecognitionConfig config = RecognitionConfig.newBuilder()
      .setEncoding(encoding)
      .setSampleRateHertz(sampleRateHertz)

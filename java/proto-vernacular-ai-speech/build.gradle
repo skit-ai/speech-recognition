@@ -1,5 +1,5 @@
-def grpcVersion = '1.27.2'
-def protobufVersion = '1.27.2'
+def grpcVersion = '1.28.1'
+def protobufVersion = '1.28.1'
 
 dependencies {
     implementation "io.grpc:grpc-protobuf-lite:${protobufVersion}"

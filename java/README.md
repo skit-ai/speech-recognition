@@ -51,3 +51,9 @@ try (SpeechClient speechClient = SpeechClient.create(accessToken)) {
 ```
 
 To see more examples, go to [samples](https://github.com/Vernacular-ai/speech-recognition/tree/master/java/samples).
+
+To run a sample:
+
+```shell
+./gradlew :samples:run -Pexample=RecognizeSync
+```

@@ -1,0 +1,13 @@
+dependencies {
+    implementation project(':vernacular-ai-speech')
+}
+
+task run(type: JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+
+    if (example == 'RecognizeSync'){
+        main = 'ai.vernacular.examples.speech.RecognizeSync'
+    } else {
+        println "Unable to find example file"
+    }
+}

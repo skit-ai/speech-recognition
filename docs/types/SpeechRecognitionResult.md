@@ -1,7 +1,7 @@
 # SpeechRecognitionResult
 A speech recognition result corresponding to a portion of the audio.
 
-```json
+```js
 {
   "alternatives": [
     {
@@ -20,7 +20,7 @@ A speech recognition result corresponding to a portion of the audio.
 # SpeechRecognitionAlternative
 Alternative hypotheses (a.k.a. n-best list).
 
-```json
+```js
 {
   "transcript": string,
   "confidence": number,
@@ -41,7 +41,7 @@ Alternative hypotheses (a.k.a. n-best list).
 # WordInfo
 Word-specific information for recognized words.
 
-```json
+```js
 {
   "startTime": string,
   "endTime": string,

@@ -31,16 +31,27 @@ We recommend that you call this service using Vernacular provided client librari
 
 **ServiceHost:** https://asr.vernacular.ai
 
+### Speech Recognition
 | Name | Description |
 |--|--|
 | [recognize](docs/api_reference/Recognize.md) | Performs synchronous speech recognition: receive results after all audio has been sent and processed. |
 | [longrunningrecognize](docs/api_reference/LongRunningRecognize.md) | Performs asynchronous speech recognition. Generally used for long audios |
 
+### Keyword Spotting
+| Name | Description |
+|--|--|
+| [recognize](docs/kws/Recognize.md) | Performs synchronous kws recognition: receive results after all audio has been sent and processed. |
+| [longrunningrecognize](docs/kws/LongRunningRecognize.md) | Performs asynchronous kws recognition. Generally used for long audios |
 
 ## RPC Reference
 
+### Speech Recognition
 | Methods | Description |
 |--|--|
 |[Recognize](docs/rpc_reference/Recognize.md) | Performs synchronous speech recognition: receive results after all audio has been sent and processed.|
 |[LongRunningRecognize](docs/rpc_reference/LongRunningRecognize.md) | Performs asynchronous speech recognition: receive results via the longrunning.Operations interface.|
 |[StreamingRecognize](docs/rpc_reference/StreamingRecognize.md)	|Performs streaming speech recognition: receive results while sending audio. Supports both unidirectional and bidirectional streaming.|
+
+### Keyword Spotting
+
+No GRPC APIs exist for key word spotting

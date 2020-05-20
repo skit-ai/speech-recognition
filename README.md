@@ -1,7 +1,7 @@
 # Speech-to-Text API
 Converts audio to text
 
-We support these ten indian languages.
+We support these ten indian languages ([language codes](https://github.com/Vernacular-ai/speech-recognition/blob/master/docs/types/RecognitionConfig.md#languagesupport)).
 - Hindi
 - English
 - Marathi

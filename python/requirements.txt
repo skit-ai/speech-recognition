@@ -1,2 +1,2 @@
-grpcio=="^1.27"
-googleapis-common-protos=="1.51.0"
+grpcio==1.27.1
+googleapis-common-protos==1.51.0

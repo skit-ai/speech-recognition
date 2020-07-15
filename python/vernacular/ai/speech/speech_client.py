@@ -11,7 +11,7 @@ class SpeechClient(object):
     Class that implements Vernacular.ai ASR API
     """
 
-    STTP_GRPC_HOST = "speechapis.vernacular.ai:80"
+    STTP_GRPC_HOST = "localhost:5021"
     AUTHORIZATION = "authorization"
     DEFAULT_TIMEOUT = 30
 

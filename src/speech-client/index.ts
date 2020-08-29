@@ -19,13 +19,43 @@ export class SpeechClient {
 
   private SpeechRecognize(
     request: any,
+    pollTime: number,
     callback: (err: any, res: any) => any
-  ) {}
+  ) {
+    setTimeout(() => {
+      this.client.getSpeechOperation(
+        request,
+        this.metadata,
+        (err: any, response: any) => {
+          if (err) {
+            throw new Error(err);
+          } else {
+            if (response.getDone()) {
+              let _response = response.getResponse();
+              let alternatives: Array<any> = [];
+              let alternativesNest: Array<any> = [];
+              let _res = _response.getResultsList();
+              for (let i = 0; i < _res.length; i++) {
+                let _resAlt = _res[i].getAlternativesList();
+                for (let j = 0; j < _resAlt.length; j++) {
+                  alternativesNest.push(_resAlt[j].getTranscript());
+                }
+                alternatives.push({ Transcript: alternativesNest });
+              }
+              callback(null, alternatives);
+            } else {
+              this.SpeechRecognize(request, pollTime, callback);
+            }
+          }
+        }
+      );
+    }, pollTime * 1000);
+  }
 
   async recognize(
     config: Typings.config,
     audio: Typings.audio,
-    callback: (x: any) => any
+    callback: (err: any, res: any) => any
   ) {
     let request = new messages.RecognizeRequest();
     let recognitionConfig = new messages.RecognitionConfig();
@@ -46,7 +76,7 @@ export class SpeechClient {
       this.metadata,
       (err: any, _response: any) => {
         if (err) {
-          callback(null);
+          callback(err, null);
         } else {
           let alternatives: Array<any> = [];
           let alternativesNest: Array<any> = [];
@@ -58,7 +88,7 @@ export class SpeechClient {
             }
             alternatives.push({ Transcript: alternativesNest });
           }
-          callback(alternatives);
+          callback(null, alternatives);
         }
       }
     );
@@ -94,38 +124,9 @@ export class SpeechClient {
             throw new Error(err);
           } else {
             operationRequest = response.getName();
-            let _res: any = null;
-            let isDone: boolean = false;
-            let isProcessing: any = false;
-
             let request = new messages.SpeechOperationRequest();
             request.setName(operationRequest);
-            while (!isDone) {
-              if (isProcessing) {
-                continue;
-              }
-              console.log(isProcessing);
-              isProcessing = setTimeout(() => {
-                console.log("in");
-                isProcessing = false;
-                isDone = true;
-                // this.client.getSpeechOperation(
-                //   request,
-                //   this.metadata,
-                //   (err: any, response: any) => {
-                //     console.log(response.getDone());
-                //     isProcessing = null;
-                //     if (err) {
-                //       throw new Error(err);
-                //     } else {
-                //       console.log(response);
-                //       isDone = response.getDone();
-                //       callback(null, response.getDone());
-                //     }
-                //   }
-                // );
-              }, pollTime * 1000);
-            }
+            this.SpeechRecognize(request, pollTime, callback);
           }
         }
       );

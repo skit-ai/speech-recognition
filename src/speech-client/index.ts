@@ -1,6 +1,7 @@
 const messages = require("../protos/speech-to-text_pb.js");
 const services = require("../protos/speech-to-text_grpc_pb.js");
 const grpc = require("grpc");
+import { Stream } from "stream";
 import { Typings } from "../types";
 
 export class SpeechClient {
@@ -9,8 +10,9 @@ export class SpeechClient {
   private DEFAULT_TIMEOUT: number = 30;
   private client: any;
   private metadata: any = new grpc.Metadata();
+  private callback: any;
   constructor(access_token: string) {
-    this.metadata.set(this.AUTHORIZATION, "Bearer " + access_token);
+    this.metadata.add(this.AUTHORIZATION, "Bearer " + access_token);
     this.client = new services.SpeechToTextClient(
       this.GRPC_HOST,
       grpc.credentials.createInsecure()
@@ -52,7 +54,7 @@ export class SpeechClient {
     }, pollTime * 1000);
   }
 
-  async recognize(
+  recognize(
     config: Typings.config,
     audio: Typings.audio,
     callback: (err: any, res: any) => any
@@ -134,5 +136,48 @@ export class SpeechClient {
       callback(e, null);
     }
   }
-  streamingRecognize() {}
+  streamingRecognizeConfig(
+    config: Typings.config,
+    callback: (err: any, res: any) => any
+  ) {
+    let request = new messages.StreamingRecognizeRequest();
+    let streamingRecognitionConfig = new messages.StreamingRecognitionConfig();
+    let recognitionConfig = new messages.RecognitionConfig();
+    recognitionConfig.setEncoding(config.encoding);
+    recognitionConfig.setSampleRateHertz(config.sampleRateHertz);
+    recognitionConfig.setMaxAlternatives(config.maxAlternatives);
+    recognitionConfig.setEnableWordTimeOffsets(config.enableWordTimeOffsets);
+    streamingRecognitionConfig.setConfig(recognitionConfig);
+    request.setStreamingConfig(streamingRecognitionConfig);
+    this.callback = callback;
+    try {
+      this.client
+        .streamingRecognize(request, this.metadata)
+        .on("error", (e: any) => {
+          throw new Error(e);
+        })
+        .on("data", (data: any) => {
+          this.callback(null, data);
+        })
+        .on("end", (data: any) => {
+          this.callback(null, "Process Ended");
+        });
+    } catch (e) {
+      this.callback(e, null);
+    }
+  }
+  streamingRecognizeAudio(audio: any) {
+    let request = new messages.StreamingRecognizeRequest();
+    request.setAudioContent(audio);
+    try {
+      this.client
+        .streamingRecognize(request, this.metadata)
+        .on("error", (err: any) => this.callback(err, null))
+        .on("data", (data: any) => {
+          this.callback(null, data);
+        });
+    } catch (e) {
+      this.callback(e, null);
+    }
+  }
 }

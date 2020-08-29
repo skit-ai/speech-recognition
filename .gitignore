@@ -2,3 +2,4 @@ node_modules
 build
 lib
 yarn.lock
+yarn-error.log

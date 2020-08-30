@@ -7,7 +7,7 @@ export declare namespace Typings {
   }
 
   export interface config {
-    encoding: number;
+    encoding: encoding;
     sampleRateHertz: number;
     languageCode: string;
     maxAlternatives: number;

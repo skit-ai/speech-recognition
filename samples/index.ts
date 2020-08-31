@@ -28,7 +28,7 @@ function longRunningRecognize() {
 }
 
 function streamingRecongnize() {
-  client.streamingRecognizeConfig(config, (err: any, res: any) => {
+  client.streamingRecognizeConfig(config, false, (err: any, res: any) => {
     console.log(err, res);
   });
   let recorder = require("node-record-lpcm16");

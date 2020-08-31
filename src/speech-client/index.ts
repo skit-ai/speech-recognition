@@ -136,6 +136,7 @@ export class SpeechClient {
   }
   streamingRecognizeConfig(
     config: Typings.config,
+    interimResults: boolean,
     callback: (err: any, res: any) => any
   ) {
     let request = new messages.StreamingRecognizeRequest();
@@ -146,6 +147,8 @@ export class SpeechClient {
     recognitionConfig.setMaxAlternatives(config.maxAlternatives);
     recognitionConfig.setEnableWordTimeOffsets(config.enableWordTimeOffsets);
     streamingRecognitionConfig.setConfig(recognitionConfig);
+    streamingRecognitionConfig.setInterimResults(interimResults);
+
     request.setStreamingConfig(streamingRecognitionConfig);
     try {
       this.recStream = this.client

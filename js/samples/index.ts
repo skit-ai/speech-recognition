@@ -10,24 +10,52 @@ let config: Typings.config = {
 };
 
 let audio: Typings.audio = {
-  audio: "https://ira-data.s3-us-west-2.amazonaws.com/test-single.wav",
+  audio: "URL or Raw Bytes audio Here",
 };
 
-let client = new SpeechClient("f89a5f77-2898-4af1-894b-5ade10e69d0f");
+/*
+  Class that implements Vernacular.ai ASR API
+  Args:
+    access_token: The authorization token to send with the requests.
+*/
+
+let client = new SpeechClient("access token");
 
 function recognize() {
+  /*
+    Performs synchronous speech recognition: receive results after all audio
+    has been sent and processed.
+    Params : config giving info abou the audio file
+             audio file which is either a url or raw bytes
+             callback function for results  
+    Returns : Transcripts of audio converted to text
+    Throws : Error if some error ocurrs if process could not be completed
+  */
   client.recognize(config, audio, (err: any, res: any) => {
     console.log(err, res);
   });
 }
 
 function longRunningRecognize() {
+  /*
+    Performs asynchronous speech recognition. 
+    Params : config giving info abou the audio file
+             audio file which is either a url or raw bytes
+             pollTime time to wait in seconds before making another request again
+             callback function for results 
+    Returns  ``Operation.response`` which contains a 
+    ``LongRunningRecognizeResponse`` message. 
+  */
   client.longRunningRecognize(config, audio, 5, (err: any, res: any) => {
     console.log(err, res);
   });
 }
 
 function streamingRecongnize() {
+  /*
+    Performs bidirectional streaming speech recognition: receive results while
+    sending audio.
+  */
   client.streamingRecognizeConfig(config, false, (err: any, res: any) => {
     console.log(err, res);
   });

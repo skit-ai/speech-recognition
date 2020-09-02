@@ -10,7 +10,7 @@ The top-level message sent by the client for the Recognize method.
 |Fields|Description|
 |--|--|
 |config	| [RecognitionConfig](../types/RecognitionConfig.md) <br> Required. Provides information to the recognizer that specifies how to process the request.|
-|audio	| [RecognitionAudio](../types/ReocgnitionAudio.md) <br> Required. The audio data to be recognized.|
+|audio	| [RecognitionAudio](../types/RecognitionAudio.md) <br> Required. The audio data to be recognized.|
 
 ## RecognizeResponse
 The only message returned to the client by the Recognize method. It contains the result as zero or more sequential SpeechRecognitionResult messages.

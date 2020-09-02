@@ -25,7 +25,7 @@ The top-level message sent by the client for the Recognize method.
 |Fields|Description|
 |--|--|
 |config	| [RecognitionConfig](../types/RecognitionConfig.md) <br> Required. Provides information to the recognizer that specifies how to process the request.|
-|audio	| [RecognitionAudio](../types/ReocgnitionAudio.md) <br> Required. The audio data to be recognized.|
+|audio	| [RecognitionAudio](../types/RecognitionAudio.md) <br> Required. The audio data to be recognized.|
 |result_url	| string <br> Optional. Post the results to this url when done. Url must be accessible through our servers.|
 
 ## SpeechOperation

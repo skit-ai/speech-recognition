@@ -4,7 +4,7 @@ const grpc = require("grpc");
 import { Typings } from "../types";
 
 export class SpeechClient {
-  private GRPC_HOST: string = "localhost:5021";
+  private GRPC_HOST: string = "speechapis.vernacular.ai:80";
   private AUTHORIZATION: string = "authorization";
   private client: any;
   private metadata: any = new grpc.Metadata();

@@ -14,7 +14,7 @@ service SpeechToText {
   // Performs synchronous non-streaming speech recognition
   rpc Recognize(RecognizeRequest) returns (RecognizeResponse) {
     option (google.api.http) = {
-      post: "/v1/speech:recognize"
+      post: "/v2/speech:recognize"
       body: "*"
     };
     option (google.api.method_signature) = "config,audio";
@@ -25,11 +25,17 @@ service SpeechToText {
   rpc StreamingRecognize(stream StreamingRecognizeRequest) returns (stream StreamingRecognizeResponse) {}
 
   // Performs asynchronous non-streaming speech recognition
-  rpc LongRunningRecognize(LongRunningRecognizeRequest) returns (SpeechOperation) {}
+  rpc LongRunningRecognize(LongRunningRecognizeRequest) returns (SpeechOperation) {
+    option (google.api.http) = {
+      post: "/v2/speech:longrunningrecognize"
+      body: "*"
+    };
+    option (google.api.method_signature) = "config,audio";
+  }
   // Returns SpeechOperation for LongRunningRecognize. Used for polling the result
   rpc GetSpeechOperation(SpeechOperationRequest) returns (SpeechOperation) {
     option (google.api.http) = {
-      get: "/v1/speech_operations/{name}"
+      get: "/v2/speech_operations/{name}"
     };
   }
 }
@@ -212,6 +218,7 @@ message WordInfo {
   float start_time = 1;
 	float end_time = 2;
 	string word = 3;
+  float confidence = 4;
 }
 
 message SpeechOperation {

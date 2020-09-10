@@ -6,7 +6,7 @@ from setuptools import setup
 
 name = "vernacular-ai-speech"
 description = "Vernacular Speech API python client"
-version = "0.1.0"
+version = "0.1.1"
 
 dependencies = ["grpcio >= 1.27.1", "googleapis-common-protos == 1.51.0"]
 extras = {}

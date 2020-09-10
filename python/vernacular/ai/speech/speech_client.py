@@ -159,7 +159,14 @@ class SpeechClient(object):
             raise VernacularAPICallError(message=str(e),response=speech_operation)
 
 
-    def streaming_recognize(self, requests, timeout=None):
+    def _streaming_request_iterable(self, config, requests):
+        """A generator that yields the config followed by the requests.
+        """
+        yield self.types.StreamingRecognizeRequest(streaming_config=config)
+        for request in requests:
+            yield request
+
+    def streaming_recognize(self, config, requests, timeout=None):
         """
         Performs bidirectional streaming speech recognition: receive results while
         sending audio. This method is only available via the gRPC API (not REST).
@@ -167,17 +174,22 @@ class SpeechClient(object):
             >>> from vernacular.ai import speech
             >>>
             >>> client = speech.SpeechClient()
+            >>> config = types.StreamingRecognitionConfig(
+            ...     config=types.RecognitionConfig(
+            ...         encoding=enums.RecognitionConfig.AudioEncoding.LINEAR16,
+            ...     ),
+            ... )
             >>>
-            >>> request = {}
-            >>>
+            >>> request = types.StreamingRecognizeRequest(audio_content=b'...')
             >>> requests = [request]
             >>> for element in client.streaming_recognize(requests):
             ...     # process element
             ...     pass
         Args:
+            config (vernacular.ai.speech.types.StreamingRecognitionConfig) The config to use for streaming
             requests (iterator[dict|vernacular.ai.speech.types.StreamingRecognizeRequest]):
                 The input objects. If a dict is provided, it must be of the
-                same form as the protobuf message:class:`~vernacular.ai.speech.types.StreamingRecognizeRequest`
+                same form as the protobuf message:`~vernacular.ai.speech.types.StreamingRecognizeRequest`
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Default value is `30s`.
         Returns:
@@ -189,7 +201,9 @@ class SpeechClient(object):
         """
         if timeout is None:
             timeout = self.DEFAULT_TIMEOUT
-        if len(requests) == 0:
-            raise ValueError("no requests found")
 
-        raise NotImplementedError   
+        streaming_responses = self.client.StreamingRecognize(
+            self._streaming_request_iterable(config, requests),
+            metadata=[(self.AUTHORIZATION, self.access_token)]
+        )
+        return streaming_responses

@@ -2,7 +2,7 @@
 
 `rpc StreamingRecognize`([StreamingRecognizeRequest](#streamingrecognizerequest))` returns `([StreamingRecognizeResponse](#streamingrecognizeresponse))
 
-Performs bidirectional streaming speech recognition: receive results while sending audio. This method is only available via the gRPC API (not REST).
+Performs bidirectional streaming speech recognition: receive results while sending audio. This method is only available via the gRPC API (not REST API).
 
 ## StreamingRecognizeRequest
 The top-level message sent by the client for the StreamingRecognize method. Multiple StreamingRecognizeRequest messages are sent. The first message must contain a `streaming_config` message and must not contain `audio_content`. All subsequent messages must contain audio_content and must not contain a streaming_config message.
@@ -10,7 +10,7 @@ The top-level message sent by the client for the StreamingRecognize method. Mult
 Union field streaming_request. The streaming request, which is either a streaming config or audio content.
 `streaming_request` can be only one of the following:
 
-|Fields||
+|Fields|Description|
 |--|--|
 |streaming_config | [StreamingRecognitionConfig](#streamingrecognitionconfig) <br> Provides information to the recognizer that specifies how to process the request. The first StreamingRecognizeRequest message must contain a streaming_config message.|
 |audio_content | bytes <br> The audio data to be recognized. Sequential chunks of audio data are sent in sequential StreamingRecognizeRequest messages. The first StreamingRecognizeRequest message must not contain audio_content data and all subsequent StreamingRecognizeRequest messages must contain audio_content data. The audio bytes must be encoded as specified in [RecognitionConfig](../types/RecognitionConfig.md). Note: as with all bytes fields, proto buffers use a pure binary representation (not base64).|
@@ -20,6 +20,7 @@ StreamingRecognizeResponse is the only message returned to the client by Streami
 
 Here's an example of a series of ten StreamingRecognizeResponses that might be returned while processing audio:
 
+```
 results { alternatives { transcript: "tube" } stability: 0.01 }
 
 results { alternatives { transcript: "to be a" } stability: 0.01 }
@@ -33,6 +34,7 @@ results { alternatives { transcript: " that's" } stability: 0.01 }
 results { alternatives { transcript: " that is" } stability: 0.9 } results { alternatives { transcript: " the question" } stability: 0.01 }
 
 results { alternatives { transcript: " that is the question" confidence: 0.98 } alternatives { transcript: " that was the question" } is_final: true }
+```
 
 Notes:
 
@@ -56,6 +58,8 @@ Provides information to the recognizer that specifies how to process the request
 |--|--|
 |config	| [RecognitionConfig](../types/RecognitionConfig.md)<br> Required. Provides information to the recognizer that specifies how to process the request.|
 |interim_results| bool <br> If true, interim results (tentative hypotheses) may be returned as they become available (these interim results are indicated with the is_final=false flag). If false or omitted, only is_final=true result(s) are returned|
+
+Note: For now `interim_results` will not work. You will only get a final response.
 
 ## StreamingRecognitionResult
 A streaming speech recognition result corresponding to a portion of the audio that is currently being processed.

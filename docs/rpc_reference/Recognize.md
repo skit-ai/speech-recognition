@@ -2,7 +2,9 @@
 
 `rpc Recognize`([RecognizeRequest](#recognizerequest)) `returns `([RecognizeResponse](#recognizeresponse))
 
-Performs synchronous speech recognition: receive results after all audio has been sent and processed.
+Performs synchronous speech recognition: receive results after all audio has been sent and processed. 
+
+**Note**: Audios more than 60 seconds do not work with sync Recognize. Use [LongRunningRecognize](LongRunningRecognize.md) for long audios.
 
 ## RecognizeRequest
 The top-level message sent by the client for the Recognize method.

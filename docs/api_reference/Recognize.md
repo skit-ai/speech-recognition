@@ -1,6 +1,8 @@
 # Recognize
 Performs a synchronous speech recognition i.e receive results after all audio has been sent and processed.
 
+**Note**: Audios more than 60 seconds do not work with sync Recognize. Use [LongRunningRecognize](LongRunningRecognize.md) for long audios.
+
 ### Request Method
 `POST https://asr.vernacular.ai/v2/speech:recognize`
 

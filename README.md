@@ -18,7 +18,7 @@ To get access to our APIs reach out to us at hello@vernacular.ai
 
 
 ## Ways to use the Service
-- Transcribing short audios
+- Transcribing short audios [audios upto 1 min]
 - Transcribing long audios [more than 1 min]
 - Transcribing audio from streaming input
 

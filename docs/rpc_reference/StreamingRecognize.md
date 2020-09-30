@@ -58,8 +58,17 @@ Provides information to the recognizer that specifies how to process the request
 |--|--|
 |config	| [RecognitionConfig](../types/RecognitionConfig.md)<br> Required. Provides information to the recognizer that specifies how to process the request.|
 |interim_results| bool <br> If true, interim results (tentative hypotheses) may be returned as they become available (these interim results are indicated with the is_final=false flag). If false or omitted, only is_final=true result(s) are returned|
+|silence_detection_config| [SilenceDetectionConfig](#silencedetectionconfig) <br> Optional. Add silence detection config for enabling silence detection.|
 
 Note: For now `interim_results` will not work. You will only get a final response.
+
+## SilenceDetectionConfig
+|Fields|Description|
+|--|--|
+|enable_silence_detection|bool <br> If true, it enables SD from server side|
+|max_speech_timeout|float <br> Max number of seconds for which recognition should go on. For example: For a value of 5, streaming will end after 5 seconds regardless of whether person is speaking or not. Set it to -1 to disable this.|
+|silence_patience| float <br> Wait for this many seconds of silence after a voice activity detection, to fire of the silence detected event. Usually 1.5 to 2 is a good value to set.|
+|no_input_timeout|float <br> Wait for this many seconds if no voice activity is detected before firing of silence detected event. For example: if set to 5 seconds, detector will wait for 5 seconds for any voice activity and then end the stream. This is there to prevent endless stream if no voice activity is there. Usually 3-5 seconds is a good range for this.|
 
 ## StreamingRecognitionResult
 A streaming speech recognition result corresponding to a portion of the audio that is currently being processed.

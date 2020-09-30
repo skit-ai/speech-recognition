@@ -96,6 +96,8 @@ message StreamingRecognitionConfig {
   // the `is_final=false` flag).
   // If `false` or omitted, only `is_final=true` result(s) are returned.
   bool interim_results = 2;
+
+  SilenceDetectionConfig silence_detection_config = 3;
 }
 
 // Provides information to the recognizer that specifies how to process the request
@@ -139,6 +141,14 @@ message SpeakerDiarizationConfig {
   // flexibility by allowing the system to automatically determine the correct
   // number of speakers. If not set, the default value is 6.
   int32 max_speaker_count = 3;
+}
+
+message SilenceDetectionConfig {
+  // If `true` enables silence detection
+  bool enable_silence_detection = 1;
+  float max_speech_timeout = 2;
+  float silence_patience = 3;
+  float no_input_timeout = 4;
 }
 
 // Either `content` or `uri` must be supplied.

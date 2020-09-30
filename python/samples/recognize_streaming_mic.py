@@ -50,6 +50,9 @@ class MicrophoneStream(object):
         return self
 
     def __exit__(self, type, value, traceback):
+        self.end()
+
+    def end(self):
         self._audio_stream.stop_stream()
         self._audio_stream.close()
         self.closed = True
@@ -86,23 +89,6 @@ class MicrophoneStream(object):
             yield b''.join(data)
 
 
-def listen_print_loop(responses):
-    """Iterates through server responses and prints them.
-    The responses passed is a generator that will block until a response
-    is provided by the server.
-    """
-    for response in responses:
-        if not response.results:
-            continue
-        
-        if len(response.results) > 0 and len(response.results[0].alternatives) > 0:
-            # Display the transcription of the top alternative.
-            transcript = response.results[0].alternatives[0].transcript
-            print(transcript)
-        else:
-            print("Empty results")
-
-
 def main():
     import argparse
 
@@ -134,7 +120,14 @@ def main():
         responses = client.streaming_recognize(streaming_config, requests)
 
         # Now, put the transcription responses to use.
-        listen_print_loop(responses)
+        for response in responses:
+            stream.end()
+            if len(response.results) > 0 and len(response.results[0].alternatives) > 0:
+                # Display the transcription of the top alternative.
+                transcript = response.results[0].alternatives[0].transcript
+                print(transcript)
+            else:
+                print("Empty results")
 
 
 if __name__ == '__main__':

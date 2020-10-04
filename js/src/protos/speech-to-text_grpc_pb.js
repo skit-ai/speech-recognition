@@ -3,10 +3,10 @@
 'use strict';
 var grpc = require('grpc');
 var speech$to$text_pb = require('./speech-to-text_pb.js');
-var google_api_annotations_pb = require('./google/api/annotations_pb.js');
-var google_api_client_pb = require('./google/api/client_pb.js');
-var google_api_field_behavior_pb = require('./google/api/field_behavior_pb.js');
-var google_rpc_status_pb = require('./google/api/status_pb.js');
+var google_api_annotations_pb = require('./google/api/annotations_pb');
+var google_api_client_pb = require('./google/api/client_pb');
+var google_api_field_behavior_pb = require('./google/api/field_behavior_pb');
+var google_rpc_status_pb = require('./google/rpc/status_pb');
 
 function serialize_speech_to_text_LongRunningRecognizeRequest(arg) {
   if (!(arg instanceof speech$to$text_pb.LongRunningRecognizeRequest)) {

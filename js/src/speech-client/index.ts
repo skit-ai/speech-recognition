@@ -1,14 +1,12 @@
-const messages = require("../protos/speech-to-text_pb.js");
-const services = require("../protos/speech-to-text_grpc_pb.js");
-const grpc = require("grpc");
-import { Typings } from "../types";
+import messages, { RecognizeResponse } from "../protos/speech-to-text_pb.js";
+import services from "../protos/speech-to-text_grpc_pb.js";
+import grpc from 'grpc';
 
 export class SpeechClient {
   private GRPC_HOST: string = "speechapis.vernacular.ai:80";
   private AUTHORIZATION: string = "authorization";
-  private client: any;
-  private metadata: any = new grpc.Metadata();
-  private recStream: any;
+  private client: services.ISpeechToTextClient;
+  private metadata: grpc.Metadata = new grpc.Metadata();
   constructor(access_token: string) {
     this.metadata.add(this.AUTHORIZATION, "Bearer " + access_token);
     this.client = new services.SpeechToTextClient(
@@ -18,31 +16,20 @@ export class SpeechClient {
   }
 
   private SpeechRecognize(
-    request: any,
+    request: messages.SpeechOperationRequest,
     pollTime: number,
-    callback: (err: any, res: any) => any
+    callback: (err: any, res: messages.SpeechRecognitionResult[] | undefined) => any
   ) {
     setTimeout(() => {
       this.client.getSpeechOperation(
         request,
         this.metadata,
-        (err: any, response: any) => {
+        (err: any, response: messages.SpeechOperation) => {
           if (err) {
             throw new Error(err);
           } else {
             if (response.getDone()) {
-              let _response = response.getResponse();
-              let alternatives: Array<any> = [];
-              let alternativesNest: Array<any> = [];
-              let _res = _response.getResultsList();
-              for (let i = 0; i < _res.length; i++) {
-                let _resAlt = _res[i].getAlternativesList();
-                for (let j = 0; j < _resAlt.length; j++) {
-                  alternativesNest.push(_resAlt[j].getTranscript());
-                }
-                alternatives.push({ Transcript: alternativesNest });
-              }
-              callback(null, alternatives);
+              callback(null, response.getResponse()?.getResultsList());
             } else {
               this.SpeechRecognize(request, pollTime, callback);
             }
@@ -53,9 +40,9 @@ export class SpeechClient {
   }
 
   recognize(
-    config: Typings.config,
-    audio: Typings.audio,
-    callback: (err: any, res: any) => any
+    config: messages.RecognitionConfig.AsObject,
+    audio: messages.RecognitionAudio.AsObject,
+    callback: (err: any, res: messages.SpeechRecognitionResult[]) => any
   ) {
     let request = new messages.RecognizeRequest();
     let recognitionConfig = new messages.RecognitionConfig();
@@ -64,40 +51,26 @@ export class SpeechClient {
     recognitionConfig.setSampleRateHertz(config.sampleRateHertz);
     recognitionConfig.setMaxAlternatives(config.maxAlternatives);
     recognitionConfig.setEnableWordTimeOffsets(config.enableWordTimeOffsets);
-    if (typeof audio.audio === "string") {
-      audioConfig.setUri(audio.audio);
+    if (audio.content) {
+      audioConfig.setContent(audio.content);
     } else {
-      audioConfig.setContent(audio.audio);
+      audioConfig.setUri(audio.uri);
     }
     request.setConfig(recognitionConfig);
     request.setAudio(audioConfig);
     this.client.recognize(
       request,
       this.metadata,
-      (err: any, _response: any) => {
-        if (err) {
-          callback(err, null);
-        } else {
-          let alternatives: Array<any> = [];
-          let alternativesNest: Array<any> = [];
-          let _res = _response.getResultsList();
-          for (let i = 0; i < _res.length; i++) {
-            let _resAlt = _res[i].getAlternativesList();
-            for (let j = 0; j < _resAlt.length; j++) {
-              alternativesNest.push(_resAlt[j].getTranscript());
-            }
-            alternatives.push({ Transcript: alternativesNest });
-          }
-          callback(null, alternatives);
-        }
+      (err: any, _response: RecognizeResponse) => {
+        callback(err, _response.getResultsList());
       }
     );
   }
   longRunningRecognize(
-    config: Typings.config,
-    audio: Typings.audio,
+    config: messages.RecognitionConfig.AsObject,
+    audio: messages.RecognitionAudio.AsObject,
     pollTime: number,
-    callback: (err: any, response: any) => any
+    callback: (err: any, res: messages.SpeechRecognitionResult[] | undefined) => any
   ) {
     pollTime = Math.max(pollTime, 5);
     let request = new messages.LongRunningRecognizeRequest();
@@ -107,10 +80,10 @@ export class SpeechClient {
     recognitionConfig.setSampleRateHertz(config.sampleRateHertz);
     recognitionConfig.setMaxAlternatives(config.maxAlternatives);
     recognitionConfig.setEnableWordTimeOffsets(config.enableWordTimeOffsets);
-    if (typeof audio.audio === "string") {
-      audioConfig.setUri(audio.audio);
+    if (audio.content) {
+      audioConfig.setContent(audio.content);
     } else {
-      audioConfig.setContent(audio.audio);
+      audioConfig.setUri(audio.uri);
     }
     request.setConfig(recognitionConfig);
     request.setAudio(audioConfig);
@@ -131,51 +104,7 @@ export class SpeechClient {
         }
       );
     } catch (e) {
-      callback(e, null);
+      callback(e, []);
     }
-  }
-  streamingRecognizeConfig(
-    config: Typings.config,
-    interimResults: boolean,
-    callback: (err: any, res: any) => any
-  ) {
-    let request = new messages.StreamingRecognizeRequest();
-    let streamingRecognitionConfig = new messages.StreamingRecognitionConfig();
-    let recognitionConfig = new messages.RecognitionConfig();
-    recognitionConfig.setEncoding(config.encoding);
-    recognitionConfig.setSampleRateHertz(config.sampleRateHertz);
-    recognitionConfig.setMaxAlternatives(config.maxAlternatives);
-    recognitionConfig.setEnableWordTimeOffsets(config.enableWordTimeOffsets);
-    streamingRecognitionConfig.setConfig(recognitionConfig);
-    streamingRecognitionConfig.setInterimResults(interimResults);
-
-    request.setStreamingConfig(streamingRecognitionConfig);
-    try {
-      this.recStream = this.client
-        .streamingRecognize(request)
-        .on("error", (err: any) => {
-          throw new Error(err);
-        })
-        .on("data", (response: any) => {
-          let alternatives: Array<any> = [];
-          let alternativesNest: Array<any> = [];
-          let _res = response.getResultsList();
-          for (let i = 0; i < _res.length; i++) {
-            let _resAlt = _res[i].getAlternativesList();
-            for (let j = 0; j < _resAlt.length; j++) {
-              alternativesNest.push(_resAlt[j].getTranscript());
-            }
-            alternatives.push({ Transcript: alternativesNest });
-          }
-          callback(null, alternatives);
-        });
-    } catch (e) {
-      callback(e, null);
-    }
-  }
-  streamingRecognizeAudio(audio: any) {
-    let request = new messages.StreamingRecognizeRequest();
-    request.setAudioContent(audio);
-    this.recStream.write(request);
   }
 }

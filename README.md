@@ -15,7 +15,7 @@ We support these ten indian languages ([language codes](https://github.com/Verna
 
 ## Authentication
 ~~To get access to our APIs reach out to us at hello@vernacular.ai~~
-We do not provide access token for the APIs anymore.
+We do not provide public access token for the APIs anymore.
 
 ## Ways to use the Service
 - Transcribing short audios [audios upto 1 min]
